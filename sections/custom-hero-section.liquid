@@ -1,0 +1,147 @@
+
+{% style %}
+    .{{ section.id }} .section-wrapper{
+            background: {{section.settings.section_background_color}};
+            padding: 5rem 0rem;
+        }
+    .{{ section.id }} .heading{
+        font-size: {{section.settings.hero_heading_size}}px;
+        color: {{section.settings.hero_heading_color}};
+    }
+    .{{ section.id }} .subheading{
+        font-size: {{section.settings.hero_subheading_size}}px;
+        color: {{section.settings.hero_subheading_color}};
+    }
+    .{{ section.id }} .btn_url{
+        font-size: {{section.settings.hero_button_size}}px;
+        color: {{section.settings.hero_button_text_color}};
+        background-color: {{section.settings.hero_button_color}};
+        height:50px !important;
+    }
+    
+{% endstyle %}
+
+<section class="{{ section.id }}">
+    <div class="container-fluid section-wrapper ">
+        <div class="container">
+            <div class="row">
+            <div class="col-12 col-md-7 d-flex flex-column justify-content-center align-items-start">
+                <h2 class="heading">{{section.settings.hero_heading}}</h2>
+                <p class="subheading">{{section.settings.hero_subheading}}</p>
+                <a href="{{section.settings.hero_button_link}}" class="btn_url border-0 rounded-pill px-4 py-3 text-decoration-none ">{{section.settings.hero_button_text}}</a>
+            </div>
+            <div class="col-12 col-md-5">
+                <img src="{{section.settings.hero_image | image_url}}" alt="{{section.settings.hero_heading}}" class="img-fluid" width="100%" height="100%" />
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% schema %}
+{
+    "name": "Custom Hero",
+    "settings": [
+        {
+            "type": "color_background",
+            "id":"section_background_color",
+            "label":"Section Background Color"
+        },
+        {
+            "type": "image_picker",
+            "id":"hero_image",
+            "label": "Main hero image"
+        },
+        {
+            "type": "header",
+            "content": "Main heading settings"
+        },
+        {
+            "type":"text",
+            "id":"hero_heading",
+            "label":"Main heading",
+        },
+        {
+            "type": "color",
+            "id":"hero_heading_color",
+            "label":"Main heading color"
+        },
+        {
+            "type": "range",
+            "id":"hero_heading_size",
+            "label":"Main heading size",
+            "min": 30,
+            "max": 75,
+            "step": 5,
+            "unit": "px",
+            "default":35
+        },
+        {
+            "type": "header",
+            "content": "Subheading settings"
+        },
+        {
+            "type":"text",
+            "id":"hero_subheading",
+            "label":"Subheading",
+        },
+        {
+            "type": "color",
+            "id":"hero_subheading_color",
+            "label":"Subheading color"
+        },
+        {
+            "type": "range",
+            "id":"hero_subheading_size",
+            "label":"Subheading size",
+            "min": 14,
+            "max": 35,
+            "step": 1,
+            "unit": "px",
+            "default":20
+        },
+        {
+            "type": "header",
+            "content": "Button settings"
+        },
+        {
+            "type":"text",
+            "id":"hero_button_text",
+            "label":"Button text",
+        },
+        {
+            "type":"url",
+            "id":"hero_button_link",
+            "label":"Button link",
+        },
+        {
+            "type": "color",
+            "id":"hero_button_color",
+            "label":"Button color"
+        },
+        {
+            "type": "color",
+            "id":"hero_button_text_color",
+            "label":"Button text color"
+        },
+        {
+            "type": "range",
+            "id":"hero_button_size",
+            "label":"Button size",
+            "min": 12,
+            "max": 30,
+            "step": 1,
+            "unit": "px",
+            "default":16
+        }
+        ],
+    "presets": [
+        {
+            "name": "Custom Hero",
+            "category": "Custom Sections"
+        }
+]
+}
+{% endschema %}

@@ -22,6 +22,9 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
+    {{ "bootstrap.min.css" |  asset_url |  stylesheet_tag }}
+    {{ "swiper.min.css" |  asset_url |  stylesheet_tag }}
+
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
@@ -401,5 +404,8 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    <script src="{{ 'bootstrap.min.js' |  asset_url  }}" defer></script>
+    <script src="{{ 'swiper.min.js' |  asset_url  }}" defer></script>
   </body>
 </html>

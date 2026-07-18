@@ -1,0 +1,260 @@
+{% style %}
+
+  .swiper {
+    width: 100%;
+  }
+
+  .swiper-slide {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 420px;
+    font-size: 18px;
+    color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 40px 60px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .parallax-bg {
+    position: absolute;
+    inset: 0;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+  }
+
+  .swiper-slide .title,
+  .swiper-slide .subtitle,
+  .swiper-slide .text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .swiper-slide .title {
+    font-size: 41px;
+    font-weight: 300;
+  }
+
+  .swiper-slide .subtitle {
+    font-size: 21px;
+  }
+
+  .swiper-slide .text {
+    font-size: 14px;
+    max-width: 400px;
+    line-height: 1.3;
+  }
+{% endstyle %}
+
+
+<div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper">
+
+  <div class="swiper-wrapper">
+    {% for slide in section.blocks %}
+      {% assign bg_image_url = slide.settings.bg_image | image_url: width: 2000 %}
+      {% assign slide_background_style = 'background-color: #222222;' %}
+
+      {% if slide.settings.slider_toggle == 'bg_image' and bg_image_url != blank %}
+        {% assign slide_background_style = 'background-image: url(' | append: bg_image_url | append: ');' %}
+      {% elsif slide.settings.slider_toggle == 'bg_color' and slide.settings.bg_color != blank %}
+        {% assign slide_background_style = 'background-color: ' | append: slide.settings.bg_color | append: ';' %}
+      {% endif %}
+
+      <div
+        class="swiper-slide "
+        style="{{ slide_background_style }}"
+        data-debug-toggle="{{ slide.settings.slider_toggle }}"
+        data-debug-bg-image="{{ bg_image_url }}"
+        data-debug-bg-color="{{ slide.settings.bg_color }}"
+        {{ slide.shopify_attributes }}>
+
+        <div
+          class="title"
+          data-swiper-parallax="-300"
+          style="color: {{ slide.settings.slide_heading_color | default: '#ffffff' }}; font-size: {{ slide.settings.slide_heading_size | default: 35 }}px;">
+          {{ slide.settings.slide_heading }}
+        </div>
+
+        <div
+          class="subtitle"
+          data-swiper-parallax="-200"
+          style="color: {{ slide.settings.slide_subheading_color | default: '#ffffff' }}; font-size: {{ slide.settings.slide_subheading_size | default: 25 }}px;">
+          {{ slide.settings.slide_subheading }}
+        </div>
+
+        <div
+          class="text"
+          data-swiper-parallax="-100"
+          style="color: {{ slide.settings.slide_description_color | default: '#ffffff' }}; font-size: {{ slide.settings.slide_description_size | default: 20 }}px;">
+          <p>{{ slide.settings.slide_description }}</p>
+        </div>
+
+      </div>
+    {% endfor %}
+  </div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-pagination"></div>
+</div>
+
+<script>
+  document.querySelectorAll('.swiper-slide').forEach(el => console.log(el.dataset));
+</script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper('.mySwiper', {
+    speed: {{ section.settings.slider_speed | default: 600 }},
+    parallax: {{ section.settings.parallax | default: false }},
+    autoplay: {% if section.settings.autoplay %}{ delay: 4000, disableOnInteraction: false }{% else %}false{% endif %},
+    
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
+</script>
+
+
+{% schema %}
+  {
+    "name": "Custom Slider Section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Main Slider Settings"
+      }, {
+        "type": "checkbox",
+        "id": "parallax",
+        "label": "Parallax slider",
+        "default": false
+      }, {
+        "type": "number",
+        "id": "slider_speed",
+        "label": "Slider speed (ms)",
+        "default": 600
+      }, {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Autoplay slider",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slide",
+        "name": "Slider",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Main heading settings"
+          },
+          {
+            "type": "text",
+            "id": "slide_heading",
+            "label": "Slide Heading"
+          },
+          {
+            "type": "color",
+            "id": "slide_heading_color",
+            "label": "Slide Heading Color"
+          },
+          {
+            "type": "range",
+            "id": "slide_heading_size",
+            "label": "Slide Heading Size",
+            "min": 30,
+            "max": 75,
+            "step": 5,
+            "unit": "px",
+            "default": 35
+          }, {
+            "type": "header",
+            "content": "Subheading settings"
+          }, {
+            "type": "text",
+            "id": "slide_subheading",
+            "label": "Slide Subheading"
+          }, {
+            "type": "color",
+            "id": "slide_subheading_color",
+            "label": "Slide Subheading Color"
+          }, {
+            "type": "range",
+            "id": "slide_subheading_size",
+            "label": "Slide Subheading Size",
+            "min": 20,
+            "max": 50,
+            "step": 5,
+            "unit": "px",
+            "default": 25
+          }, {
+            "type": "header",
+            "content": "Description settings"
+          }, {
+            "type": "textarea",
+            "id": "slide_description",
+            "label": "Slide Description"
+          }, {
+            "type": "color",
+            "id": "slide_description_color",
+            "label": "Slide Description Color"
+          }, {
+            "type": "range",
+            "id": "slide_description_size",
+            "label": "Slide Description Size",
+            "min": 15,
+            "max": 30,
+            "step": 5,
+            "unit": "px",
+            "default": 20
+          }, {
+            "type": "header",
+            "content": "Background settings"
+          }, {
+            "type": "radio",
+            "id": "slider_toggle",
+            "label": "Slider Toggle",
+            "options": [
+              {
+                "label": "Image",
+                "value": "bg_image"
+              }, {
+                "label": "Background Color",
+                "value": "bg_color"
+              }
+            ],
+            "default": "bg_image"
+          }, {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Slider Background Image",
+            "visible_if": "{{ block.settings.slider_toggle == 'bg_image' }}"
+          }, {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Slider Background Color",
+            "visible_if": "{{ block.settings.slider_toggle == 'bg_color' }}"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom Slider"
+      }
+    ]
+  }
+{% endschema %}
