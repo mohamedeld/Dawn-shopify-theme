@@ -317,6 +317,8 @@
       >
     {%- endif -%}
 
+    {{'style.css' |  asset_url |  stylesheet_tag}}
+
     <script>
       if (Shopify.designMode) {
         document.documentElement.classList.add('shopify-design-mode');
@@ -324,7 +326,7 @@
     </script>
   </head>
 
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %} {{template.name}}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
@@ -333,8 +335,8 @@
       {%- render 'cart-drawer' -%}
     {%- endif -%}
 
-    {% sections 'header-group' %}
-
+    {% section 'header-shipping-bar' %}
+    {% section 'new-header' %}
     <main
       id="MainContent"
       class="content-for-layout focus-none"
