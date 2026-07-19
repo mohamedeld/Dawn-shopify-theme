@@ -1,0 +1,113 @@
+<div class="home-banner">
+    {% if section.settings.banner_image %}
+  <img
+    src="{{ section.settings.banner_image | image_url: width: 1600 }}"
+    alt="Banner"
+    width="{{ section.settings.banner_image.width }}"
+    height="{{ section.settings.banner_image.height }}"
+    loading="lazy"
+  >
+{% endif %}
+<div class="content">
+    <div class="container">
+        <h6>{{ section.settings.mini-text }}</h6>
+        <h1>{{ section.settings.title }}</h1>
+        <p>{{ section.settings.content }}</p>
+
+        <a href="{{ section.settings.url }}">Shop Now</a>
+    </div>
+</div>
+</div>
+
+{% style %}
+    .home-banner{
+        position:relative;
+        overflow:hidden;
+        display:grid;
+        align-items:center;
+        width:100%;
+    }
+    .content{
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        text-align:left;
+        display:flex;
+        align-items:center;
+    }
+    .content a{
+        display:block;
+        background:#cc4d0f;
+        text-decoration:none;
+        width:fit-content;
+        padding:10px 2em;
+        margin:2em 0 0;
+        font-weight:600;
+        color:#fff;
+    }
+    .home-banner h6{
+        font-size:14px;
+        color:#121212;
+        margin:0;
+    }
+    .home-banner h1{
+        font-size:40px;
+        color:#121212;
+        margin:0.5em 0 0;
+    }
+    .home-banner p{
+        font-size:16px;
+        color:#121212;
+        margin:1em 0 0;
+        max-width:600px;
+    }
+    .home-banner img{
+        width:100%;
+        max-height:80vh;
+        height:100%;
+        object-fit:cover;
+        z-index:-1;
+    }
+{% endstyle %}
+
+{% schema %}
+{
+    "name": "Banner",
+    "class": "banner",
+    "settings": [   
+        {
+            "type": "image_picker",
+            "id": "banner_image",
+            "label": "Banner Image"
+        },
+        {
+            "type": "text",
+            "id": "mini-text",
+            "label": "Mini text",
+            "default":"New Arrival",
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Your Title Here"
+        },
+        {
+            "type": "text",
+            "id": "content",
+            "label": "Content",
+            "default":"Award winning designs, crafted with care and precision. Our products are made from the finest materials, ensuring both quality and durability."
+        },
+        {
+            "type":"url",
+            "id": "url",
+            "label": "URL"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Banner"
+        }
+    ]
+}
+{% endschema %}
