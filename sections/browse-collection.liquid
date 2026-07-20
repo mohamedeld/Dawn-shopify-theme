@@ -1,0 +1,170 @@
+<div class="container">
+    <div class="browse-collection">
+        <h2>{{section.settings.title}}</h2>
+        <p>{{section.settings.paragraph}}</p>
+        <div class="collection-list">
+            {% for block in section.blocks %}
+                <a href="{{block.settings.get-col.url}}" class="child-col-{{forloop.index}}">
+                    {% if block.settings.col-img == nil %}
+                        {{'collection-1' |  placeholder_svg_tag}}
+                        {% else %}
+                            <img src="{{block.settings.col-img |  img_url: 'master'}}" alt="{{block.settings.get-col.title}}" />
+                    {% endif %}
+                    <h3>{{block.settings.get-col.title}}</h3>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% style %}
+    .browse-collection{
+        text-align:center;
+        margin:2em 0;
+        padding-top:{{section.settings.padding_top}}em;
+        padding-bottom:{{section.settings.padding_bottom}}em;
+        
+    }
+    .browse-collection h2{
+        margin-bottom:0;
+    }
+    .browse-collection p{
+        margin-top:0;
+        max-width:600px;
+        text-align:center;
+        margin-inline:auto;
+    }
+    .collection-list{
+        display:grid;
+        grid-template-areas:'one one one two two',
+                            'one one one three three';
+        gap:1em;
+        padding-top:1em;
+        position:relative;
+    }
+    .collection-list a{
+        padding:6em 1em;
+        text-align:center;
+        display:grid;
+        align-items:center;
+        position:relative;
+        text-decoration:none;
+    }
+    .collection-list a:after{
+        content:"";
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        outline:2px solid #fff;
+        outline-offset:-14px;
+        background:rgba(0,0,0,0.1);
+    }
+    .collection-list h3{
+        color:#fff;
+        z-index:1;
+        font-size:clamp(16px,4vw,22px);
+        letter-spacing:0.6px;
+    }
+    .collection-list img{
+        height:100%;
+
+    }
+    .browse-collection a.child-col-1{
+        grid-area:one;
+    }
+    .browse-collection a.child-col-2{
+        grid-area:two;
+    }
+    .browse-collection a.child-col-3{
+        grid-area:three;
+    }
+    .collection-list svg{
+        position:absolute;
+        top:0;
+        left:0;
+        bottom:0;
+        right:0;
+        background:rgba(0,0,0,0.1);
+        width:100%;
+        height:100%;
+    }
+{% endstyle %} 
+
+{% schema %}
+{
+    "name": "Browse Collection",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default":"Browse The Range"
+        },
+        {
+            "type": "text",
+            "id": "paragraph",
+            "label": "Content",
+            "default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut laoreet aliquam, nunc nisl aliquet nunc, eget aliquam nisl nunc euismod nunc."
+        },
+        {
+            "type": "range",
+            "label": "Padding Top",
+            "id": "padding_top",
+            "step": 0.5,
+            "default":1,
+            "unit": "em",
+            "min": 0,
+            "max": 8
+        },
+        {
+            "type": "range",
+            "label": "Padding Bottom",
+            "id": "padding_bottom",
+            "step": 0.5,
+            "default":1,
+            "unit": "em",
+            "min": 0,
+            "max": 8
+        },
+
+        ],
+        "blocks": [
+            {
+                "name": "Collection",
+                "type": "collection",
+                "settings": [
+                    {
+                        "type": "collection",
+                        "id": "get-col",
+                        "label": "Choose Collection"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "col-img",
+                        "label": "Title"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Browse collection",
+                "blocks": [
+                    {
+                        "type": "collection"
+                    },
+                    {
+                        "type": "collection"
+                    },
+                    {
+                        "type": "collection"
+                    }
+                ]
+            },
+            
+        ]
+}
+{% endschema %}
